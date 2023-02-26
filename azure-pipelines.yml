@@ -25,6 +25,6 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(templateFile)'
     csmParametersFile: '$(templateParameterFile)'
-    overrideParameters: '-storageAccountType Standard_LRS'
+    #　"overrideParameters:"は使用しない
     deploymentMode: 'Incremental'
     deploymentName: 'DeployPipelineTemplate'
