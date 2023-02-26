@@ -1,0 +1,30 @@
+trigger:
+- main # ブランチ名はデフォのmainを使用
+
+name: Deploy Bicep files
+
+variables:
+  poolName: 'tak-test-agentpool' # 今回Self-Hosted agent なので、設定したエージェントプール名を入力＆poolNameへ変数名を変更
+
+  azureServiceConnection: 'tak-test-ARM' # sevice connectionの名前を入力
+  resourceGroupName: 'tak-test-bicep' # 対象のRG名を入力
+  location: 'japaneast' # 対象のlocationを指定
+  templateFile: './storageaccount.bicep' #　対象のbicepファイルを指定
+  templateParameterFile: './storageaccount.parameters.json'
+pool:
+  name: $(poolName) # ↑の変数名変更に合わせて変更
+
+steps:
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: '$(azureServiceConnection)'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: '$(resourceGroupName)'
+    location: '$(location)'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(templateFile)'
+    csmParametersFile: '$(templateParameterFile)'
+    overrideParameters: '-storageAccountType Standard_LRS'
+    deploymentMode: 'Incremental'
+    deploymentName: 'DeployPipelineTemplate'
