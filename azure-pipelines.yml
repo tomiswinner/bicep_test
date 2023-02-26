@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: tak-VM
+  name: tak-VM
 
 steps:
 - script: echo Hello, world!
